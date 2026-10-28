@@ -1,0 +1,23 @@
+{
+  "name": "darkhold-exchange",
+  "version": "1.0.0",
+  "description": "The Darkhold Exchange - High-Frequency Secondary Marketplace & Limit Order Book for Festival Passes & Relics",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node test/suite.js",
+    "bench": "node src/benchmark.js"
+  },
+  "keywords": [
+    "orderbook",
+    "matching-engine",
+    "dutch-auction",
+    "double-entry-ledger",
+    "merkle-tree",
+    "proof-of-solvency",
+    "anti-scalping"
+  ],
+  "author": "Team Nadaan Darinde (ID 47)",
+  "license": "MIT"
+}

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Darkhold | High-End Analytics & Trading Dashboard</title>
+  <!-- Modern Inter & JetBrains Mono Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-body">
+
+  <!-- =========================================================================
+       DYNAMIC AMBIENT BACKGROUND & GLOWING COLOR-ROTATING ORBS
+       ========================================================================= -->
+  <div class="ambient-glow-container" id="ambientGlowBg" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-orb orb-4"></div>
+    <div class="ambient-mesh-grid"></div>
+  </div>
+
+  <!-- =========================================================================
+       APP SHELL: SLEEK SIDEBAR + MAIN VIEWPORT
+       ========================================================================= -->
+  <div class="app-shell">
+
+    <!-- 1. SLEEK LEFT SIDEBAR (DOCK) -->
+    <aside class="sleek-sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-logo-pill" id="brandLogoHome" title="Darkhold Platform - Return to Dashboard">
+          <svg class="brand-logo-icon" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="10" fill="url(#logoGlow)" />
+            <path d="M10 11L16 7L22 11V21L16 25L10 21V11Z" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="3" fill="#38BDF8"/>
+            <defs>
+              <linearGradient id="logoGlow" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#3B82F6"/>
+                <stop offset="1" stop-color="#8B5CF6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Main Navigation">
+          <!-- Overview / Dashboard -->
+          <button class="nav-dock-btn active" data-page="dashboard" id="dockBtnDashboard" title="Analytics Dashboard">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="9" rx="2"></rect>
+                <rect x="14" y="3" width="7" height="5" rx="2"></rect>
+                <rect x="14" y="12" width="7" height="9" rx="2"></rect>
+                <rect x="3" y="16" width="7" height="5" rx="2"></rect>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Dashboard</span>
+          </button>
+
+          <!-- Trade / Exchange -->
+          <button class="nav-dock-btn" data-page="trade" id="dockBtnTrade" title="Trade / Exchange Desk">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Trade Desk</span>
+          </button>
+
+          <!-- Auctions -->
+          <button class="nav-dock-btn" data-page="auctions" id="dockBtnAuctions" title="Dutch Auctions Arena">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Auctions</span>
+          </button>
+
+          <!-- Portfolio / My Orders -->
+          <button class="nav-dock-btn" data-page="portfolio" id="dockBtnPortfolio" title="Portfolio & Resting Orders">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Portfolio</span>
+          </button>
+
+          <!-- Transparency / Audit -->
+          <button class="nav-dock-btn" data-page="audit" id="dockBtnAudit" title="Security & Solvency Audit">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Audit & Merkle</span>
+          </button>
+
+          <!-- Node Network -->
+          <button class="nav-dock-btn" id="dockBtnNetwork" title="Network & Relay Topology">
+            <div class="dock-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+            <span class="dock-tooltip">Relay Nodes</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-dock-btn" id="dockBtnSettings" title="Protocol Settings">
+          <div class="dock-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <span class="dock-tooltip">Settings</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 2. MAIN CONTENT VIEWPORT -->
+    <div class="main-viewport">
+
+      <!-- TOP NAVIGATION BAR -->
+      <header class="top-nav-glass">
+        <div class="top-nav-left">
+          <div class="page-title-badge">
+            <span class="page-title-text" id="topPageTitle">Dashboard</span>
+          </div>
+
+          <!-- Subtle Search Bar with Keyboard Shortcut Badge -->
+          <div class="glass-search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="globalSearchInput" placeholder="Search orders, tickets, Merkle hashes..." spellcheck="false" autocomplete="off">
+            <kbd class="kbd-badge">alt + f</kbd>
+          </div>
+        </div>
+
+        <div class="top-nav-right">
+          <!-- Balance Widget (from Image 1) -->
+          <div class="glass-balance-pill" id="globalBalanceChip" title="Global Vault Balance">
+            <div class="balance-icon-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+            </div>
+            <span class="balance-label">Bal.</span>
+            <span class="balance-amount" id="globalBalanceValue">$ 3.323.542</span>
+          </div>
+
+          <!-- Market Selector Dropdown (Clean Top Control) -->
+          <div class="market-select-pill">
+            <svg class="market-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <select id="marketSelector" class="market-select-transparent">
+              <option value="DAY1-PASS" selected>🎟️ Day-1 Pass ($100.00)</option>
+              <option value="VIP-RELIC">💎 VIP Relic ($250.00)</option>
+              <option value="CHRONO-WRISTBAND">⚡ Chrono Fastpass ($75.00)</option>
+            </select>
+          </div>
+
+          <!-- Notification Bell -->
+          <button class="glass-icon-btn" id="btnNotifications" title="Real-time Trade & Auction Alerts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-indicator-dot"></span>
+          </button>
+
+          <!-- Security Lock Indicator -->
+          <button class="glass-icon-btn" id="btnSecurityLock" title="Anti-Scalp Collar & Zero-Sum Sentinel Active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </button>
+
+          <!-- User Profile Indicator -->
+          <div class="glass-user-profile" id="userProfileChip" title="Click to Switch Persona">
+            <div class="user-avatar-wrap">
+              <img class="user-avatar-img" id="userAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+              <span class="user-online-pip"></span>
+            </div>
+            <div class="user-info-text">
+              <span class="user-name" id="userDisplayName">Alfred Williamson</span>
+              <span class="user-handle" id="userDisplayEmail">williamson@darkhold.io</span>
+            </div>
+            <svg class="chevron-down-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- =====================================================================
+           SUBPAGE 0: SAAS ANALYTICS DASHBOARD - FESTIVAL TICKET MARKET METRICS
+           ===================================================================== -->
+      <section class="subpage-view active" id="pageDashboard">
+        
+        <!-- GREETING & FILTER BAR -->
+        <div class="greeting-action-bar">
+          <div class="greeting-copy">
+            <span class="greeting-pretitle" id="greetingTime">Good Morning,</span>
+            <h1 class="greeting-hero-name" id="greetingHeroName">Alfred Williamson</h1>
+          </div>
+
+          <div class="dashboard-controls-right">
+            <!-- Time Window Selector Dropdown -->
+            <div class="glass-pill-control">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span class="control-label">Timeframe:</span>
+              <select id="statPeriodSelect" class="transparent-inline-select">
+                <option value="last_week" selected>Last 24 Hours</option>
+                <option value="last_month">Last 7 Days</option>
+                <option value="half_year">Event Season</option>
+                <option value="all_time">All Time</option>
+              </select>
+            </div>
+
+            <!-- Segment Switcher (Personal / Team) -->
+            <div class="segmented-pill-toggle" id="segmentToggle">
+              <button class="seg-btn active" data-segment="personal">Personal</button>
+              <button class="seg-btn" data-segment="team">Global Market</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN DASHBOARD GRID -->
+        <div class="saas-dashboard-grid">
+
+          <!-- WIDGET 1: TICKET PRICE DYNAMICS & CLEARANCE (MAIN SPLINE CHART) -->
+          <article class="glass-panel main-spline-card" id="cardMainSpline">
+            <div class="spline-card-header">
+              <div class="spline-title-group">
+                <h2 class="spline-main-heading">Ticket Clearance</h2>
+                <span class="spline-sub-badge">Day-1 Pass Price Velocity & Anti-Scalp Boundary ($100 Face · $120 Cap)</span>
+              </div>
+
+              <div class="spline-header-right">
+                <div class="expense-income-badge">
+                  <span class="ei-tag bold-white">Price Action</span>
+                  <span class="ei-sep">/</span>
+                  <span class="ei-tag muted-gray">Volume</span>
+                  <span class="ei-sparkle-arrow">↗</span>
+                </div>
+                <span class="ei-timeframe-sub">HOURLY MATCH CLEARANCE</span>
+              </div>
+            </div>
+
+            <!-- Spline Canvas Container with Neon 3D Glowing Tube & Watermark -->
+            <div class="spline-canvas-stage">
+              <!-- Watermark from Image 1: $100 FACE VALUE -->
+              <div class="spline-watermark" aria-hidden="true">$100</div>
+              
+              <!-- 3D Neon Spline Canvas -->
+              <canvas id="splineChartCanvas" class="spline-canvas"></canvas>
+
+              <!-- Interactive Radar Pulse Target Overlay -->
+              <div class="radar-pulse-beacon" id="radarBeacon">
+                <div class="radar-ring ring-3"></div>
+                <div class="radar-ring ring-2"></div>
+                <div class="radar-ring ring-1"></div>
+                <div class="radar-center-dot"></div>
+                <div class="radar-tooltip-pill" id="radarTooltip">
+                  <span class="tooltip-val">$ 104.50</span>
+                  <span class="tooltip-date">MID-MARKET CLEARANCE</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline Axis -->
+            <div class="spline-timeline-axis">
+              <span class="axis-point">00:00</span>
+              <span class="axis-point">04:00</span>
+              <span class="axis-point active">08:00</span>
+              <span class="axis-point">12:00</span>
+              <span class="axis-point">16:00</span>
+              <span class="axis-point">20:00</span>
+            </div>
+          </article>
+
+          <!-- WIDGET 2: 24H PROTOCOL VOLUME & COLLAR CEILING -->
+          <article class="glass-panel mini-metric-card" id="cardStorageProgress">
+            <div class="card-inner-header">
+              <div class="metric-meta-group">
+                <span class="meta-label-muted">24h Trading Volume</span>
+                <div class="metric-large-row">
+                  <span class="metric-giant-number" id="storageUsedNumber">$48.5</span>
+                  <span class="metric-giant-unit">K</span>
+                </div>
+              </div>
+              <div class="glass-mini-dropdown">
+                <span class="tag-valid">100% Zero-Sum</span>
+              </div>
+            </div>
+
+            <!-- Glowing Gradient Progress Bar for Anti-Scalp Ceiling Headroom -->
+            <div class="glowing-progress-module">
+              <div class="progress-labels-row">
+                <span class="progress-left-label">Anti-Scalp Ceiling Headroom</span>
+                <span class="progress-right-label"><strong id="storageLeftVal">+15.5%</strong> allowed</span>
+              </div>
+              <div class="glowing-progress-track">
+                <div class="glowing-progress-fill" style="width: 78%;" id="storageProgressFill"></div>
+              </div>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="metric-footer-actions">
+              <button class="glass-text-btn" id="btnManageVault" onclick="window.darkhold.switchSubpage('trade')">
+                <span>Open Trade Desk</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </article>
+
+          <!-- WIDGET 3: HOURLY MATCHED PASSES VELOCITY (VERTICAL NEON BARS) -->
+          <article class="glass-panel vertical-bars-card" id="cardVerticalBars">
+            <div class="card-inner-header">
+              <div>
+                <h3 class="panel-heading">Order Velocity</h3>
+                <span class="panel-subtext">Hourly Matched Passes Throughput</span>
+              </div>
+              <div class="time-filter-pills" id="expensesTimeFilter">
+                <button class="pill-btn active" data-time="day">Hour</button>
+                <button class="pill-btn" data-time="week">Day</button>
+                <button class="pill-btn" data-time="month">Week</button>
+              </div>
+            </div>
+
+            <!-- Canvas for Thin Glowing Vertical Bars -->
+            <div class="bars-canvas-wrap">
+              <canvas id="barsChartCanvas" class="bars-canvas"></canvas>
+            </div>
+
+            <!-- Hour Markers -->
+            <div class="bars-x-axis">
+              <span>08h</span>
+              <span>10h</span>
+              <span>12h</span>
+              <span>14h</span>
+              <span>16h</span>
+              <span>18h</span>
+              <span>20h</span>
+              <span>22h</span>
+              <span>24h</span>
+            </div>
+          </article>
+
+          <!-- WIDGET 4: PASS INVENTORY & VAULT ALLOCATION (DOUGHNUT CHART) -->
+          <article class="glass-panel circular-donut-card" id="cardCircularDonut">
+            <div class="donut-widget-layout">
+              <!-- Ring Chart Container -->
+              <div class="donut-chart-container">
+                <canvas id="donutChartCanvas" class="donut-canvas"></canvas>
+                <div class="donut-center-legend">
+                  <span class="donut-center-sub">Vault Pass</span>
+                  <span class="donut-center-title">Inventory</span>
+                </div>
+              </div>
+
+              <!-- Primary Metric & Breakdown Details -->
+              <div class="donut-metrics-column">
+                <div class="donut-primary-stat-box">
+                  <span class="donut-stat-prefix">Total Backed Assets</span>
+                  <span class="donut-stat-val" id="donutTotalMetric">$ 938.572</span>
+                </div>
+
+                <!-- Segments Legend -->
+                <div class="donut-segments-legend">
+                  <div class="legend-row">
+                    <span class="legend-pip coral-glow"></span>
+                    <span class="legend-name">Day-1 Festival Passes</span>
+                    <span class="legend-pct">46%</span>
+                  </div>
+                  <div class="legend-row">
+                    <span class="legend-pip cyan-glow"></span>
+                    <span class="legend-name">VIP Relic Passes</span>
+                    <span class="legend-pct">34%</span>
+                  </div>
+                  <div class="legend-row">
+                    <span class="legend-pip purple-glow"></span>
+                    <span class="legend-name">Chrono Fastpasses</span>
+                    <span class="legend-pct">20%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- WIDGET 5: ACTIVE MARKET HUBS -->
+          <article class="glass-panel spaces-card" id="cardSpaces">
+            <div class="card-inner-header">
+              <div>
+                <h3 class="panel-heading">Active Ticket Markets</h3>
+                <span class="panel-subtext">Order books governed by strict anti-scalping price caps</span>
+              </div>
+              <button class="glass-add-btn" onclick="window.darkhold.switchSubpage('trade')">Trade Now</button>
+            </div>
+
+            <div class="spaces-subcards-grid">
+              <!-- Subcard 1: Day-1 Pass -->
+              <div class="space-subpanel" onclick="window.darkhold.selectMarket('DAY1-PASS')" style="cursor: pointer;">
+                <div class="space-subpanel-top">
+                  <div class="space-icon-badge blue-tint">🎟️</div>
+                  <span class="space-subpanel-name">Day-1 Pass</span>
+                  <span class="team-node-badge">Primary</span>
+                </div>
+                <div class="space-metrics-strip">
+                  <div class="space-stat">
+                    <span class="space-num">$100.00</span>
+                    <span class="space-sub">Face Value</span>
+                  </div>
+                  <div class="space-stat">
+                    <span class="space-num text-amber">$120.00</span>
+                    <span class="space-sub">Max Cap</span>
+                  </div>
+                  <div class="space-stat">
+                    <span class="space-num text-cyan">$7.00</span>
+                    <span class="space-sub">Spread</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Subcard 2: VIP Relic -->
+              <div class="space-subpanel" onclick="window.darkhold.selectMarket('VIP-RELIC')" style="cursor: pointer;">
+                <div class="space-subpanel-top">
+                  <div class="space-icon-badge purple-tint">💎</div>
+                  <span class="space-subpanel-name">VIP Relic</span>
+                  <span class="team-node-badge">Rare</span>
+                </div>
+                <div class="space-metrics-strip">
+                  <div class="space-stat">
+                    <span class="space-num">$250.00</span>
+                    <span class="space-sub">Face Value</span>
+                  </div>
+                  <div class="space-stat">
+                    <span class="space-num text-purple">$300.00</span>
+                    <span class="space-sub">Max Cap</span>
+                  </div>
+                  <div class="space-stat">
+                    <span class="space-num text-cyan">$12.00</span>
+                    <span class="space-sub">Spread</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- WIDGET 6: PROTOCOL SENTINEL & MATCHING HEALTH -->
+          <article class="glass-panel uploading-files-card" id="cardUploadingFiles">
+            <div class="card-inner-header">
+              <h3 class="panel-heading">Protocol Sentinels</h3>
+              <span class="mode-tag-pill">All Active</span>
+            </div>
+
+            <div class="upload-items-stack">
+              <!-- Item 1: FIFO Engine -->
+              <div class="upload-item-row">
+                <div class="upload-file-icon">⚡</div>
+                <div class="upload-file-meta">
+                  <span class="upload-file-title">FIFO Price-Time Engine</span>
+                  <span class="upload-file-size">Sub-millisecond priority matching</span>
+                </div>
+                <div class="status-success-circle">✓</div>
+              </div>
+
+              <!-- Item 2: Anti-Scalp Collar -->
+              <div class="upload-item-row">
+                <div class="upload-file-icon">🛡️</div>
+                <div class="upload-file-meta">
+                  <span class="upload-file-title">Anti-Scalping Collar Barrier</span>
+                  <span class="upload-file-size">Max +20% threshold enforced</span>
+                </div>
+                <div class="status-success-circle">✓</div>
+              </div>
+
+              <!-- Item 3: Hash Chained Log -->
+              <div class="upload-item-row">
+                <div class="upload-file-icon">⛓️</div>
+                <div class="upload-file-meta">
+                  <span class="upload-file-title">SHA-256 Audit Log</span>
+                  <span class="upload-file-size">Cryptographic tamper-evident chain</span>
+                </div>
+                <div class="status-success-circle">✓</div>
+              </div>
+            </div>
+
+            <!-- Zero-Sum Ledger Balance Invariant Bar -->
+            <div class="upload-summary-footer">
+              <div class="summary-top-row">
+                <div class="sync-spinner-label">
+                  <span class="pulse-dot-cyan"></span>
+                  <span>Double-Entry Zero-Sum State</span>
+                </div>
+                <span class="summary-pct-bold text-green">100% Balanced</span>
+              </div>
+              <div class="summary-progress-track">
+                <div class="summary-progress-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- WIDGET 7: RECENT AUDITED SETTLEMENTS -->
+          <article class="glass-panel storage-access-card" id="cardStorageAccess">
+            <div class="card-inner-header">
+              <div>
+                <h3 class="panel-heading">Recent Audited Settlements</h3>
+                <span class="panel-subtext">Deterministic matches recorded in the cryptographic journal</span>
+              </div>
+            </div>
+
+            <div class="access-rows-stack" id="dashboardRecentSettlements">
+              <div class="access-row">
+                <span class="access-folder-title">TRD-DA-9812</span>
+                <span class="access-file-count">VIP-RELIC</span>
+                <span class="access-size-badge">$169.73</span>
+                <span class="tag-valid">Zero-Sum</span>
+                <button class="glass-share-btn" onclick="window.darkhold.switchSubpage('audit')">Verify Proof</button>
+              </div>
+              <div class="access-row">
+                <span class="access-folder-title">TRD-DA-8431</span>
+                <span class="access-file-count">DAY1-PASS</span>
+                <span class="access-size-badge">$105.00</span>
+                <span class="tag-valid">Zero-Sum</span>
+                <button class="glass-share-btn" onclick="window.darkhold.switchSubpage('audit')">Verify Proof</button>
+              </div>
+              <div class="access-row">
+                <span class="access-folder-title">TRD-DA-7210</span>
+                <span class="access-file-count">CHRONO-WRISTBAND</span>
+                <span class="access-size-badge">$78.50</span>
+                <span class="tag-valid">Zero-Sum</span>
+                <button class="glass-share-btn" onclick="window.darkhold.switchSubpage('audit')">Verify Proof</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- WIDGET 8: GLOBAL RELAY NODES -->
+          <article class="glass-panel global-nodes-card" id="cardGlobalNodes">
+            <div class="card-inner-header">
+              <div>
+                <h3 class="panel-heading">Global Liquidity Relays</h3>
+                <span class="panel-subtext">Low-Latency Matching Node Network</span>
+              </div>
+              <div class="map-connection-badge">
+                <span class="conn-code">+ LHR</span>
+                <span class="conn-dots">············</span>
+                <span class="conn-code">+ SYD</span>
+              </div>
+            </div>
+
+            <!-- Canvas for Interactive Network Map -->
+            <div class="map-canvas-container">
+              <canvas id="globalMapCanvas" class="map-canvas"></canvas>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SUBPAGE 1: TRADE / EXCHANGE (WITH GRAPHS IN LEVEL 2 TRADE DESK!)
+           ===================================================================== -->
+      <section class="subpage-view" id="pageTrade">
+        <div class="trade-page-header-row">
+          <div class="trade-header-meta">
+            <h2 class="subpage-title">Trade / Exchange</h2>
+            <span class="subpage-subtitle">Deterministic High-Frequency Price-Time FIFO Matching Engine with Anti-Scalp Collar</span>
+          </div>
+          <!-- Anti-Scalp Collar Indicator & Ledger Status Pill -->
+          <div class="trade-status-pills">
+            <div class="stat-pill anti-scalp-indicator" id="collarBadge">
+              <span class="stat-lbl">Price Collar</span>
+              <span class="stat-val" id="collarInfo">Face: $100.00 | Cap: $120.00</span>
+            </div>
+            <div class="stat-pill status-pill">
+              <span class="status-dot green"></span>
+              <span class="stat-lbl">Ledger Status</span>
+              <span class="stat-val text-green" id="ledgerStatusText">Zero-Sum (Δ $0.00)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: REAL-TIME INTERACTIVE PRICE SPLINE & DEPTH MOUNTAIN GRAPHS IN TRADE DESK -->
+        <div class="trade-charts-strip">
+          
+          <!-- 1. REAL-TIME TICKER PRICE CHART -->
+          <div class="glass-panel trade-chart-panel">
+            <div class="chart-header-row">
+              <div class="chart-title-box">
+                <span class="chart-market-tag" id="tradeChartMarketTag">DAY1-PASS</span>
+                <span class="chart-current-price" id="tradeChartPrice">$105.00</span>
+                <span class="chart-delta-tag text-green">+5.0%</span>
+              </div>
+              <div class="chart-legend-box">
+                <span class="legend-item"><span class="pip amber-pip"></span>Max Cap: $120.00</span>
+                <span class="legend-item"><span class="pip cyan-pip"></span>Face: $100.00</span>
+                <span class="legend-item"><span class="pip neon-pip"></span>Executed Matches</span>
+              </div>
+            </div>
+            <div class="trade-canvas-container">
+              <canvas id="tradePriceChartCanvas" class="trade-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- 2. VISUAL LEVEL 2 MARKET DEPTH MOUNTAIN CHART -->
+          <div class="glass-panel depth-mountain-panel">
+            <div class="chart-header-row">
+              <div>
+                <h4 class="panel-heading">Visual Market Depth</h4>
+                <span class="panel-subtext">Cumulative Bids (Buys) vs Cumulative Asks (Sells)</span>
+              </div>
+              <div class="depth-stats-pill">
+                <span class="text-green font-mono">Bids: <strong id="depthTotalBids">6</strong></span>
+                <span class="divider">|</span>
+                <span class="text-coral font-mono">Asks: <strong id="depthTotalAsks">5</strong></span>
+              </div>
+            </div>
+            <div class="depth-mountain-container">
+              <canvas id="depthMountainCanvas" class="depth-canvas"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="trade-streamlined-grid">
+          
+          <!-- ORDER DESK MODULE -->
+          <section class="glass-panel order-desk-panel" aria-labelledby="orderDeskTitle">
+            <div class="panel-top-bar">
+              <h3 id="orderDeskTitle" class="panel-heading">Order Desk</h3>
+              <span class="mode-tag-pill" id="orderDeskMode">Active Market</span>
+            </div>
+
+            <!-- Side Toggle (Buy / Sell) -->
+            <div class="order-side-toggle">
+              <button class="side-btn active-buy" id="btnSideBuy" data-side="BUY">BUY</button>
+              <button class="side-btn" id="btnSideSell" data-side="SELL">SELL</button>
+            </div>
+
+            <!-- Order Type Toggle (Limit / Market) -->
+            <div class="order-type-toggle">
+              <button class="type-btn active" id="btnTypeLimit" data-type="LIMIT">LIMIT</button>
+              <button class="type-btn" id="btnTypeMarket" data-type="MARKET">MARKET</button>
+            </div>
+
+            <!-- Price & Quantity Inputs -->
+            <div class="form-group-block" id="groupPrice">
+              <div class="form-label-row">
+                <label for="inputPrice" class="input-label">Limit Price ($)</label>
+                <span class="sublabel-info" id="collarPriceGuide">Max allowed: $120.00</span>
+              </div>
+              <div class="input-input-wrap">
+                <span class="input-currency-prefix">$</span>
+                <input type="number" id="inputPrice" step="0.50" min="1.00" value="100.00" class="glass-input">
+              </div>
+            </div>
+
+            <div class="form-group-block">
+              <div class="form-label-row">
+                <label for="inputQty" class="input-label">Quantity</label>
+                <span class="sublabel-info" id="inventoryGuide">Available to buy: Max</span>
+              </div>
+              <div class="input-input-wrap">
+                <input type="number" id="inputQty" step="1" min="1" max="50" value="1" class="glass-input">
+                <span class="input-unit-suffix">Passes</span>
+              </div>
+            </div>
+
+            <!-- Quick Percentage / Quantity Shortcuts -->
+            <div class="quick-qty-row">
+              <button class="btn-qty-chip" data-qty="1">1</button>
+              <button class="btn-qty-chip" data-qty="2">2</button>
+              <button class="btn-qty-chip" data-qty="5">5</button>
+              <button class="btn-qty-chip" data-qty="10">10</button>
+            </div>
+
+            <!-- Order Summary Matrix -->
+            <div class="order-summary-box">
+              <div class="summary-line">
+                <span>Estimated Value:</span>
+                <strong id="summaryEstValue">$100.00</strong>
+              </div>
+              <div class="summary-line">
+                <span>Anti-Scalp Verification:</span>
+                <span class="tag-valid" id="summaryCollarStatus">✓ Within Collar</span>
+              </div>
+              <div class="summary-line">
+                <span>Settlement Hold:</span>
+                <span id="summaryHoldEst">$100.00 Cash Hold</span>
+              </div>
+            </div>
+
+            <!-- Submit Order CTA -->
+            <button id="btnSubmitOrder" class="btn-execute-buy">
+              <span id="btnSubmitText">Place Buy Order ($100.00)</span>
+            </button>
+            <p class="order-desk-hint">Zero-sum balance hold reserved atomically upon placement.</p>
+          </section>
+
+          <!-- LEVEL 2 MARKET DEPTH & LIVE MATCHED TRADES -->
+          <div class="depth-and-trades-column">
+            
+            <!-- LEVEL 2 MARKET DEPTH -->
+            <section class="glass-panel orderbook-panel" aria-labelledby="depthTitle">
+              <div class="panel-top-bar">
+                <div>
+                  <h3 id="depthTitle" class="panel-heading">Level 2 Market Depth</h3>
+                  <span class="panel-subtext" id="marketBookTitle">Day-1 Festival Pass · Strict Right-Aligned Digits</span>
+                </div>
+                <div class="spread-indicator-pill">
+                  <span>Spread: </span>
+                  <strong id="bookSpreadVal">$7.00 (7.0%)</strong>
+                </div>
+              </div>
+
+              <!-- Strictly Right-Aligned Headers -->
+              <div class="book-table-header">
+                <span>Price ($)</span>
+                <span>Size</span>
+                <span>Total</span>
+                <span>Depth</span>
+              </div>
+
+              <!-- Asks (Sells) Ladder -->
+              <div class="orderbook-side asks-ladder" id="bookAsksContainer">
+                <div class="book-row ask-row"><span class="price-ask">106.00</span><span>2</span><span>4</span><div class="depth-bar ask-depth" style="width: 60%;"></div></div>
+                <div class="book-row ask-row"><span class="price-ask">105.00</span><span>1</span><span>2</span><div class="depth-bar ask-depth" style="width: 30%;"></div></div>
+              </div>
+
+              <!-- Mid-Market Spread Bar -->
+              <div class="mid-market-spread-bar" id="midSpreadBar">
+                <span class="mid-market-label">Mid-Market Reference</span>
+                <span class="mid-market-price" id="midPriceVal">$101.50</span>
+                <span class="last-trade-chip" id="lastTradeChip">Last: $100.00</span>
+              </div>
+
+              <!-- Bids (Buys) Ladder -->
+              <div class="orderbook-side bids-ladder" id="bookBidsContainer">
+                <div class="book-row bid-row"><span class="price-bid">98.00</span><span>1</span><span>1</span><div class="depth-bar bid-depth" style="width: 25%;"></div></div>
+                <div class="book-row bid-row"><span class="price-bid">96.00</span><span>2</span><span>3</span><div class="depth-bar bid-depth" style="width: 50%;"></div></div>
+                <div class="book-row bid-row"><span class="price-bid">95.00</span><span>1</span><span>4</span><div class="depth-bar bid-depth" style="width: 75%;"></div></div>
+              </div>
+            </section>
+
+            <!-- LIVE MATCHED TRADES -->
+            <section class="glass-panel matched-trades-panel" aria-labelledby="tradesTitle">
+              <div class="panel-top-bar">
+                <h3 id="tradesTitle" class="panel-heading">Live Matched Trades</h3>
+                <span class="stream-pulse-pill"><span class="pulse-dot"></span>Real-Time Stream</span>
+              </div>
+              <div class="trades-table-header">
+                <span>Time</span>
+                <span>Price</span>
+                <span>Qty</span>
+                <span>Maker / Taker</span>
+              </div>
+              <div class="trades-stream-container" id="tradesStreamBox">
+                <div class="empty-state-notice">Streaming matched trades via WebSockets...</div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SUBPAGE 2: DEDICATED AUCTIONS CANVAS
+           ===================================================================== -->
+      <section class="subpage-view" id="pageAuctions">
+        <div class="subpage-header-row">
+          <div>
+            <h2 class="subpage-title">Dutch Auction Arena</h2>
+            <span class="subpage-subtitle">Real-time descending price auctions for festival pass liquidation</span>
+          </div>
+          <button class="btn-launch-auction" id="btnToggleCreateAuction">+ Host New Dutch Auction</button>
+        </div>
+
+        <!-- Creator Drawer / Modal -->
+        <div class="glass-panel create-auction-box hidden" id="createAuctionDrawer">
+          <h3 class="panel-heading">Create Dutch Auction Event</h3>
+          <div class="form-grid-3col">
+            <div class="form-group-block">
+              <label class="input-label">Market</label>
+              <select id="auctionMarketSelect" class="glass-input">
+                <option value="DAY1-PASS">Day-1 Festival Pass</option>
+                <option value="VIP-RELIC">VIP Relic</option>
+                <option value="CHRONO-WRISTBAND">Chrono Wristband</option>
+              </select>
+            </div>
+            <div class="form-group-block">
+              <label class="input-label">Quantity</label>
+              <input type="number" id="auctionQtyInput" value="2" min="1" max="10" class="glass-input">
+            </div>
+            <div class="form-group-block">
+              <label class="input-label">Start Price ($)</label>
+              <input type="number" id="auctionStartPrice" value="120.00" step="1.00" class="glass-input">
+            </div>
+            <div class="form-group-block">
+              <label class="input-label">Reserve Floor Price ($)</label>
+              <input type="number" id="auctionFloorPrice" value="70.00" step="1.00" class="glass-input">
+            </div>
+            <div class="form-group-block">
+              <label class="input-label">Duration (Seconds)</label>
+              <input type="number" id="auctionDurationInput" value="60" min="15" max="600" class="glass-input">
+            </div>
+            <div class="form-group-block flex-end-cta">
+              <button id="btnExecuteCreateAuction" class="btn-execute-buy">Launch Auction</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Dutch Auctions Grid -->
+        <div class="auctions-arena-grid" id="auctionsGridContainer">
+          <div class="empty-state-notice">Fetching active Dutch auctions...</div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SUBPAGE 3: DEDICATED PORTFOLIO / MY ORDERS CANVAS
+           ===================================================================== -->
+      <section class="subpage-view" id="pagePortfolio">
+        <div class="subpage-header-row">
+          <div>
+            <h2 class="subpage-title">Portfolio & Resting Orders</h2>
+            <span class="subpage-subtitle">Real-time ledger balances, active orders, and settlement records</span>
+          </div>
+          <div class="portfolio-actions">
+            <button class="glass-action-btn" id="btnDeposit500">+ Deposit $500</button>
+            <button class="glass-action-btn" id="btnSwitchPersona">Switch Persona</button>
+          </div>
+        </div>
+
+        <!-- Portfolio Metric Summary Cards -->
+        <div class="portfolio-stats-grid">
+          <div class="glass-panel stat-card">
+            <span class="stat-card-title">Cash Available</span>
+            <span class="stat-card-val text-green" id="portfolioCashAvail">$2,500.00</span>
+            <span class="stat-card-sub">Liquid Gateway Balance</span>
+          </div>
+          <div class="glass-panel stat-card">
+            <span class="stat-card-title">Cash in Resting Orders</span>
+            <span class="stat-card-val text-amber" id="portfolioCashHeld">$0.00</span>
+            <span class="stat-card-sub">Reserved by Atomic Holds</span>
+          </div>
+          <div class="glass-panel stat-card">
+            <span class="stat-card-title">Pass Inventory</span>
+            <span class="stat-card-val text-cyan" id="portfolioTicketsHeld">0 Passes</span>
+            <span class="stat-card-sub">Cryptographically Solvency Verified</span>
+          </div>
+          <div class="glass-panel stat-card">
+            <span class="stat-card-title">Active Orders</span>
+            <span class="stat-card-val text-purple" id="portfolioOpenOrdersCount">0</span>
+            <span class="stat-card-sub">Resting in FIFO Books</span>
+          </div>
+        </div>
+
+        <!-- Your Resting Orders Table -->
+        <div class="glass-panel portfolio-orders-panel">
+          <div class="panel-top-bar">
+            <div>
+              <h3 class="panel-heading">Your Resting Orders</h3>
+              <span class="panel-subtext">Orders currently placed in the limit book with anti-spoofing protection</span>
+            </div>
+            <button class="glass-refresh-btn" id="btnRefreshOrders">↻ Refresh</button>
+          </div>
+
+          <div class="portfolio-orders-table-wrap">
+            <table class="glass-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Market</th>
+                  <th>Side</th>
+                  <th>Type</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Filled</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="restingOrdersTableBody">
+                <tr><td colspan="10" class="empty-table-cell">No active resting orders for your persona.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Complete Trade Execution History -->
+        <div class="glass-panel portfolio-history-panel">
+          <div class="panel-top-bar">
+            <div>
+              <h3 class="panel-heading">Full Trade History</h3>
+              <span class="panel-subtext">Audited matches executed through the deterministic matching engine</span>
+            </div>
+          </div>
+          <div class="portfolio-orders-table-wrap">
+            <table class="glass-table">
+              <thead>
+                <tr>
+                  <th>Trade ID</th>
+                  <th>Instrument</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Maker Order</th>
+                  <th>Taker Order</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="tradeHistoryTableBody">
+                <tr><td colspan="7" class="empty-table-cell">No trades executed in current session yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SUBPAGE 4: DEDICATED TRANSPARENCY / AUDIT CANVAS
+           ===================================================================== -->
+      <section class="subpage-view" id="pageAudit">
+        <div class="subpage-header-row">
+          <div>
+            <h2 class="subpage-title">Cryptographic Transparency & Audit</h2>
+            <span class="subpage-subtitle">Proof of Solvency, SHA-256 Hash Chain verification, and Double-Entry Ledger</span>
+          </div>
+          <button class="glass-audit-btn" id="btnRunFullAudit">Verify Full Audit Integrity</button>
+        </div>
+
+        <div class="audit-dashboard-grid">
+          
+          <!-- MERKLE SOLVENCY VERIFIER -->
+          <div class="glass-panel audit-card" id="cardMerkle">
+            <div class="panel-top-bar">
+              <h3 class="panel-heading">Merkle Tree Proof of Solvency</h3>
+              <span class="tag-valid" id="merkleRootBadge">Valid Root</span>
+            </div>
+            <p class="panel-subtext">Verify that your account balance and relic holdings are cryptographically included in the exchange state without revealing other users' private balances.</p>
+            
+            <div class="merkle-root-display">
+              <span class="label">256-Bit Merkle Root:</span>
+              <code class="hash-code-block" id="merkleRootHex">0000000000000000000000000000000000000000000000000000000000000000</code>
+            </div>
+
+            <div class="merkle-action-row">
+              <button class="btn-sm-action" id="btnGenMerkleProof">Generate Inclusion Proof for Active Account</button>
+            </div>
+
+            <div class="proof-result-box hidden" id="merkleProofResult">
+              <span class="proof-status-text" id="proofStatusText">Proof Verified</span>
+              <pre class="json-code-box" id="merkleProofJson"></pre>
+            </div>
+          </div>
+
+          <!-- SHA-256 HASH CHAIN WITH TAMPER SIMULATOR -->
+          <div class="glass-panel audit-card" id="cardHashChain">
+            <div class="panel-top-bar">
+              <h3 class="panel-heading">Hash-Chained Audit Log</h3>
+              <button class="btn-tamper-warn" id="btnSimulateTamper">Simulate Tamper Attack</button>
+            </div>
+            <p class="panel-subtext">Every order placement, match, cancellation, and settlement is chained via cryptographic hashes (H_n = SHA256(H_{n-1} || payload)).</p>
+            
+            <div class="audit-chain-status-pill" id="chainStatusPill">
+              <span class="status-dot green"></span>
+              <span id="chainStatusMsg">Chain Integrity: 100% Valid from Genesis Block</span>
+            </div>
+
+            <div class="chain-stream-wrap" id="hashChainContainer">
+              <div class="empty-state-notice">Loading hash-chained blocks...</div>
+            </div>
+          </div>
+
+          <!-- DOUBLE-ENTRY GENERAL LEDGER -->
+          <div class="glass-panel audit-card full-span-card" id="cardLedger">
+            <div class="panel-top-bar">
+              <div>
+                <h3 class="panel-heading">Double-Entry General Ledger</h3>
+                <span class="panel-subtext">Continuous zero-sum balance invariant check: Total Debits == Total Credits</span>
+              </div>
+              <span class="tag-valid" id="ledgerZeroSumTag">Zero-Sum Verified (Δ $0.00)</span>
+            </div>
+
+            <div class="ledger-table-wrap">
+              <table class="glass-table">
+                <thead>
+                  <tr>
+                    <th>Account ID</th>
+                    <th>Cash Available</th>
+                    <th>Cash Held (Escrow)</th>
+                    <th>Passes Available</th>
+                    <th>Passes Held</th>
+                    <th>Last Active</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerAccountsBody">
+                  <tr><td colspan="6" class="empty-table-cell">Loading ledger records...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- HIGH-CONCURRENCY BENCHMARK RUNNER -->
+          <div class="glass-panel audit-card full-span-card" id="cardBenchmark">
+            <div class="panel-top-bar">
+              <div>
+                <h3 class="panel-heading">High-Frequency Matching Engine Benchmark</h3>
+                <span class="panel-subtext">Simulate 1,000+ orders/sec directly in the matching core to prove sub-millisecond throughput</span>
+              </div>
+              <button class="btn-execute-buy" id="btnRunLiveBenchmark">Run 1,000 Ops Benchmark</button>
+            </div>
+            <div class="benchmark-results-box hidden" id="benchResultsBox">
+              <div class="bench-metric-row">
+                <div class="bench-stat">
+                  <span class="b-lbl">Throughput</span>
+                  <span class="b-val text-green" id="benchThroughput">- ops/sec</span>
+                </div>
+                <div class="bench-stat">
+                  <span class="b-lbl">Avg Latency</span>
+                  <span class="b-val text-cyan" id="benchLatency">- µs</span>
+                </div>
+                <div class="bench-stat">
+                  <span class="b-lbl">Zero-Sum Check</span>
+                  <span class="b-val text-purple" id="benchZeroSum">Verified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /main-viewport -->
+
+  </div><!-- /app-shell -->
+
+  <!-- =========================================================================
+       MODALS: PERSONA SWITCHER, RELAY NODES TOPOLOGY, & PROTOCOL SETTINGS
+       ========================================================================= -->
+
+  <!-- 1. SWITCH PERSONA MODAL -->
+  <div class="glass-modal-overlay hidden" id="personaModal">
+    <div class="glass-modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Select User Persona</h3>
+        <button class="btn-close-modal" id="btnClosePersonaModal">✕</button>
+      </div>
+      <p class="modal-desc">Switch between dynamic roles to test buyers, sellers, and market makers:</p>
+      <div class="persona-options-grid">
+        <div class="persona-card active" data-user="buyer_alex" data-name="Alfred Williamson" data-role="BUYER" data-email="williamson@darkhold.io">
+          <div class="persona-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+          </div>
+          <div class="persona-info">
+            <span class="persona-name">Alfred Williamson (Buyer Alex)</span>
+            <span class="persona-role text-cyan">Buyer Role · $2,500 Initial Capital</span>
+          </div>
+        </div>
+        <div class="persona-card" data-user="seller_1" data-name="Georg Johnson" data-role="SELLER" data-email="georg.johnson@darkhold.io">
+          <div class="persona-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+          </div>
+          <div class="persona-info">
+            <span class="persona-name">Georg Johnson (Seller 1)</span>
+            <span class="persona-role text-amber">Seller Role · 10 Day-1 Passes Inventory</span>
+          </div>
+        </div>
+        <div class="persona-card" data-user="seller_2" data-name="Alisa Snow" data-role="SELLER" data-email="alisa.snow@darkhold.io">
+          <div class="persona-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Avatar">
+          </div>
+          <div class="persona-info">
+            <span class="persona-name">Alisa Snow (Seller 2)</span>
+            <span class="persona-role text-purple">VIP Relic Host · 5 VIP Passes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. RELAY NODES TOPOLOGY MODAL (FIXED FOR DOCK BUTTON) -->
+  <div class="glass-modal-overlay hidden" id="nodesModal">
+    <div class="glass-modal-box large-modal">
+      <div class="modal-header">
+        <div class="modal-title-with-pill">
+          <h3 class="modal-title">Global Liquidity & Solvency Relays</h3>
+          <span class="tag-valid">5 Nodes Online</span>
+        </div>
+        <button class="btn-close-modal" id="btnCloseNodesModal">✕</button>
+      </div>
+      <p class="modal-desc">Distributed consensus and order propagation relay topology powering the sub-millisecond matching engine:</p>
+      
+      <div class="nodes-list-stack">
+        <div class="node-status-row">
+          <div class="node-id-chip"><span class="status-dot green"></span><strong>NODE-LHR-01</strong> <small>(London Core Engine)</small></div>
+          <span class="node-role-badge">Primary FIFO Engine</span>
+          <span class="text-cyan font-mono">0.6 ms</span>
+          <span class="tag-valid">In Sync</span>
+        </div>
+        <div class="node-status-row">
+          <div class="node-id-chip"><span class="status-dot green"></span><strong>NODE-JFK-02</strong> <small>(New York Sentinel)</small></div>
+          <span class="node-role-badge">Anti-Scalp Sentinel</span>
+          <span class="text-cyan font-mono">1.1 ms</span>
+          <span class="tag-valid">In Sync</span>
+        </div>
+        <div class="node-status-row">
+          <div class="node-id-chip"><span class="status-dot green"></span><strong>NODE-SGP-03</strong> <small>(Singapore Oracle)</small></div>
+          <span class="node-role-badge">Merkle Solvency Oracle</span>
+          <span class="text-cyan font-mono">1.8 ms</span>
+          <span class="tag-valid">In Sync</span>
+        </div>
+        <div class="node-status-row">
+          <div class="node-id-chip"><span class="status-dot green"></span><strong>NODE-TYO-04</strong> <small>(Tokyo Ledger)</small></div>
+          <span class="node-role-badge">Double-Entry Auditor</span>
+          <span class="text-cyan font-mono">1.4 ms</span>
+          <span class="tag-valid">In Sync</span>
+        </div>
+        <div class="node-status-row">
+          <div class="node-id-chip"><span class="status-dot green"></span><strong>NODE-SYD-05</strong> <small>(Sydney Liquidation)</small></div>
+          <span class="node-role-badge">Dutch Auction Host</span>
+          <span class="text-cyan font-mono">2.2 ms</span>
+          <span class="tag-valid">In Sync</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PROTOCOL SETTINGS MODAL (FIXED FOR SETTINGS BUTTON) -->
+  <div class="glass-modal-overlay hidden" id="settingsModal">
+    <div class="glass-modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Protocol & Interface Settings</h3>
+        <button class="btn-close-modal" id="btnCloseSettingsModal">✕</button>
+      </div>
+      <p class="modal-desc">Configure anti-scalping parameters, ambient illumination, and notifications:</p>
+      
+      <div class="settings-form-stack">
+        <div class="setting-item-row">
+          <div class="setting-info">
+            <span class="setting-title">Anti-Scalping Collar Threshold</span>
+            <span class="setting-desc">Maximum % price escalation allowed above face value (Default: +20%)</span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-val-chip" id="collarCapDisplay">+20%</span>
+          </div>
+        </div>
+
+        <div class="setting-item-row">
+          <div class="setting-info">
+            <span class="setting-title">Anti-Spoofing Resting Time</span>
+            <span class="setting-desc">Minimum delay required before an order can be cancelled (Default: 300ms)</span>
+          </div>
+          <div class="setting-control">
+            <span class="setting-val-chip">300 ms</span>
+          </div>
+        </div>
+
+        <div class="setting-item-row">
+          <div class="setting-info">
+            <span class="setting-title">Ambient Glow Atmosphere</span>
+            <span class="setting-desc">Dynamic color-changing background radial illumination</span>
+          </div>
+          <div class="setting-control">
+            <select id="settingGlowIntensity" class="glass-select-sm">
+              <option value="dynamic" selected>Dynamic (Color Changing)</option>
+              <option value="soft">Soft Minimal</option>
+              <option value="off">Off (Pure Midnight)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="setting-item-row">
+          <div class="setting-info">
+            <span class="setting-title">Audio & Sound Cues</span>
+            <span class="setting-desc">Chimes on order execution and auction snipes</span>
+          </div>
+          <div class="setting-control">
+            <label class="switch-toggle">
+              <input type="checkbox" id="settingSoundToggle" checked>
+              <span class="slider-toggle"></span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-execute-buy" id="btnSaveSettings">Save Preferences</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="app.js"></script>
+</body>
+</html>
